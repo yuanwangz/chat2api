@@ -35,6 +35,7 @@ enable_limit = is_true(os.getenv('ENABLE_LIMIT', True))
 upload_by_url = is_true(os.getenv('UPLOAD_BY_URL', False))
 check_model = is_true(os.getenv('CHECK_MODEL', False))
 scheduled_refresh = is_true(os.getenv('SCHEDULED_REFRESH', False))
+del_conversation = is_true(os.getenv('DEL_CONVERSATION', False))
 
 authorization_list = authorization.split(',') if authorization else []
 chatgpt_base_url_list = chatgpt_base_url.split(',') if chatgpt_base_url else []
@@ -61,4 +62,5 @@ logger.info("ENABLE_LIMIT:      " + str(enable_limit))
 logger.info("UPLOAD_BY_URL:     " + str(upload_by_url))
 logger.info("CHECK_MODEL:       " + str(check_model))
 logger.info("SCHEDULED_REFRESH: " + str(scheduled_refresh))
+logger.info("DEL_CONVERSATION:  " + str(del_conversation))
 logger.info("-" * 60)

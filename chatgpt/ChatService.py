@@ -17,7 +17,7 @@ from utils.Client import Client
 from utils.Logger import logger
 from utils.authorization import verify_token, get_req_token
 from utils.config import proxy_url_list, chatgpt_base_url_list, arkose_token_url_list, history_disabled, pow_difficulty, \
-    conversation_only, enable_limit, upload_by_url, check_model, auth_key
+    conversation_only, enable_limit, upload_by_url, check_model, auth_key, del_conversation
 
 
 class ChatService:
@@ -289,6 +289,18 @@ class ChatService:
             self.chat_request['conversation_id'] = self.conversation_id
         return self.chat_request
 
+    async def delete_conversation(self):
+        if del_conversation:
+            conversation_id = self.conversation_id
+            logger.info(f"准备删除的会话id： {conversation_id}")
+            url = f"{self.base_url}/conversation/{conversation_id}"
+            patch_data = {"is_visible": False}
+            r = await self.s.patch(url, headers=self.chat_headers, json=patch_data, timeout=10)
+            if r.status_code == 200:
+                logger.info(f"删除会话 {conversation_id} 成功")
+            else:
+                logger.error(f"PATCH 请求失败: {r.text}")
+
     async def send_conversation(self):
         try:
             try:
@@ -334,6 +346,8 @@ class ChatService:
                 resp = json.loads(rtext)
                 self.wss_url = resp.get('wss_url')
                 conversation_id = resp.get('conversation_id')
+                self.conversation_id = conversation_id
+                self.chat_request['conversation_id'] = self.conversation_id
                 await set_wss(self.req_token, True, self.wss_url)
                 logger.info(f"next wss_url: {self.wss_url}")
                 if not self.ws:

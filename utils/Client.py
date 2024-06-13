@@ -19,6 +19,10 @@ class Client:
         r = await self.session.post(*args, impersonate=self.impersonate, **kwargs)
         return r
 
+    async def patch(self, *args, **kwargs):
+        r = await self.session.patch(*args, impersonate=self.impersonate, **kwargs)
+        return r
+
     async def post_stream(self, *args, headers=None, cookies=None, **kwargs):
         if self.session:
             headers = headers or self.session.headers
