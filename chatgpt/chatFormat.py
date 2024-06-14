@@ -253,6 +253,7 @@ async def stream_response(service, response, model, max_tokens):
                         "message_id": message_id,
                         "conversation_id": conversation_id,
                     })
+                service.conversation_id = conversation_id
                 completion_tokens += 1
                 yield f"data: {json.dumps(chunk_new_data)}\n\n"
             elif chunk.startswith("data: [DONE]"):
