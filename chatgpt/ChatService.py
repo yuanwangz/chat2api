@@ -195,7 +195,6 @@ class ChatService:
                         logger.info(f"Turnstile ignored: {e}")
                     # raise HTTPException(status_code=403, detail="Turnstile required")
 
-
                 arkose = resp.get('arkose', {})
                 arkose_required = arkose.get('required')
                 if arkose_required and self.persona != "chatgpt-freeaccount":
