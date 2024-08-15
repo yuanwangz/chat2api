@@ -13,7 +13,6 @@ from chatgpt.chatFormat import api_messages_to_chat, stream_response, format_not
 from chatgpt.chatLimit import check_is_limit, handle_request_limit
 from chatgpt.proofofWork import get_config, get_dpl, get_answer_token, get_requirements_token
 from chatgpt.turnstile import process_turnstile
-from chatgpt.wssClient import token2wss, set_wss
 from utils.Client import Client
 from utils.Logger import logger
 from utils.config import proxy_url_list, chatgpt_base_url_list, ark0se_token_url_list, history_disabled, pow_difficulty, \
