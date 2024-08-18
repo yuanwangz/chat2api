@@ -22,7 +22,7 @@ api_prefix = os.getenv('API_PREFIX', None)
 authorization = os.getenv('AUTHORIZATION', '').replace(' ', '')
 chatgpt_base_url = os.getenv('CHATGPT_BASE_URL', 'https://chatgpt.com').replace(' ', '')
 auth_key = os.getenv('AUTH_KEY', None)
-user_agents = os.getenv('USER_AGENTS', '').replace(', ', ',')
+user_agents = os.getenv('USER_AGENTS', '[]')
 
 ark0se_token_url = os.getenv('ARK' + 'OSE_TOKEN_URL', '').replace(' ', '')
 if not ark0se_token_url:
@@ -46,10 +46,10 @@ authorization_list = authorization.split(',') if authorization else []
 chatgpt_base_url_list = chatgpt_base_url.split(',') if chatgpt_base_url else []
 ark0se_token_url_list = ark0se_token_url.split(',') if ark0se_token_url else []
 proxy_url_list = proxy_url.split(',') if proxy_url else []
-user_agents_list = user_agents.split(',') if user_agents else []
+user_agents_list = ast.literal_eval(user_agents)
 
 logger.info("-" * 60)
-logger.info("Chat2Api v1.4.3 | https://github.com/lanqian528/chat2api")
+logger.info("Chat2Api v1.4.4 | https://github.com/lanqian528/chat2api")
 logger.info("-" * 60)
 logger.info("Environment variables:")
 logger.info("API_PREFIX:        " + str(api_prefix))
@@ -69,4 +69,5 @@ logger.info("UPLOAD_BY_URL:     " + str(upload_by_url))
 logger.info("CHECK_MODEL:       " + str(check_model))
 logger.info("SCHEDULED_REFRESH: " + str(scheduled_refresh))
 logger.info("DEL_CONVERSATION:  " + str(del_conversation))
+logger.info("USER_AGENTS:       " + str(user_agents_list))
 logger.info("-" * 60)
