@@ -196,8 +196,9 @@ class ChatService:
                         )
                         r2esp = r2.json()
                         logger.info(f"ark0se_token: {r2esp}")
-                        self.ark0se_token = r2esp.get('token')
-                        if not self.ark0se_token:
+                        if r2esp.get('solved', True):
+                            self.ark0se_token = r2esp.get('token')
+                        else:
                             raise HTTPException(status_code=403, detail="Failed to get Ark0se token")
                     except Exception:
                         raise HTTPException(status_code=403, detail="Failed to get Ark0se token")
@@ -315,7 +316,7 @@ class ChatService:
                         check_is_limit(detail, token=self.req_token, model=self.req_model)
                 else:
                     if "cf-please-wait" in rtext:
-                         # logger.error(f"Failed to send conversation: cf-please-wait")
+                        # logger.error(f"Failed to send conversation: cf-please-wait")
                         raise HTTPException(status_code=r.status_code, detail="cf-please-wait")
                     if r.status_code == 429:
                         # logger.error(f"Failed to send conversation: rate-limit")
@@ -351,7 +352,7 @@ class ChatService:
             raise HTTPException(status_code=500, detail=str(e))
 
     async def get_download_url(self, file_id):
-        url = f"https://new.oaifree.com/backend-api/files/{file_id}/download"
+        url = f"{self.base_url}/files/{file_id}/download"
         headers = self.base_headers.copy()
         try:
             r = await self.s.get(url, headers=headers, timeout=5)
@@ -471,7 +472,7 @@ class ChatService:
 
     async def get_response_file_url(self, conversation_id, message_id, sandbox_path):
         try:
-            url = f"https://new.oaifree.com/backend-api/conversation/{conversation_id}/interpreter/download"
+            url = f"{self.base_url}/conversation/{conversation_id}/interpreter/download"
             params = {
                 "message_id": message_id,
                 "sandbox_path": sandbox_path
