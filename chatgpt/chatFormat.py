@@ -176,7 +176,6 @@ async def stream_response(service, response, model, max_tokens):
                 message_id = message.get("id")
                 content = message.get("content", {})
                 recipient = message.get("recipient", "")
-                logger.info(f'message:{message}')
 
                 if not message and chunk_old_data.get("type") == "moderation":
                     delta = {"role": "assistant", "content": moderation_message}
