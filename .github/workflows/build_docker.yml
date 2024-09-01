@@ -36,7 +36,7 @@ jobs:
         with:
           images: yuanwangz/chat2api
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest
             type=raw,value=v1.4.5
 
       - name: Build and push
