@@ -290,13 +290,11 @@ class ChatService:
             self.chat_request['conversation_id'] = self.conversation_id
         return self.chat_request
 
-    async def delete_conversation_with_delay(self):
-        await asyncio.sleep(10)
-        await self.delete_conversation()
     async def delete_conversation(self):
         if del_conversation:
             conversation_id = self.conversation_id
             logger.info(f"准备删除的会话id： {conversation_id}")
+            await asyncio.sleep(5)
             url = f"{self.base_url}/conversation/{conversation_id}"
             patch_data = {"is_visible": False}
             r = await self.s.patch(url, headers=self.chat_headers, json=patch_data, timeout=10)
