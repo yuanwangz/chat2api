@@ -75,9 +75,11 @@ async def send_conversation(request: Request, req_token: str = Depends(oauth2_sc
     try:
         if isinstance(res, types.AsyncGeneratorType):
             background = BackgroundTask(chat_service.close_client)
+            asyncio.create_task(chat_service.delete_conversation_with_delay())
             return StreamingResponse(res, media_type="text/event-stream", background=background)
         else:
             background = BackgroundTask(chat_service.close_client)
+            asyncio.create_task(chat_service.delete_conversation_with_delay())
             return JSONResponse(res, media_type="application/json", background=background)
     except HTTPException as e:
         await chat_service.close_client()
