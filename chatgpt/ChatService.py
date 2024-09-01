@@ -490,6 +490,7 @@ class ChatService:
             return None
 
     async def close_client(self):
+        self.delete_conversation()
         if self.s:
             await self.s.close()
         if self.ws:
