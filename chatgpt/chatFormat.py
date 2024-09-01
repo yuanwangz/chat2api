@@ -233,9 +233,9 @@ async def stream_response(service, response, model, max_tokens):
                             if inner_content_type == "image_asset_pointer":
                                 last_content_type = "image_asset_pointer"
                                 file_id = part.get('asset_pointer').replace('file-service://', '')
-                                logger.debug(f"file_id: {file_id}")
+                                logger.info(f"file_id: {file_id}")
                                 image_download_url = await service.get_download_url(file_id)
-                                logger.debug(f"image_download_url: {image_download_url}")
+                                logger.info(f"image_download_url: {image_download_url}")
                                 if image_download_url:
                                     delta = {"content": f"\n```\n![image]({image_download_url})\n"}
                                 else:
