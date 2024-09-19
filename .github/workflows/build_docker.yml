@@ -37,7 +37,7 @@ jobs:
           images: yuanwangz/chat2api
           tags: |
             type=raw,value=latest
-            type=raw,value=v1.4.5
+            type=raw,value=v1.4.7
 
       - name: Build and push
         uses: docker/build-push-action@v5
