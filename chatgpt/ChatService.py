@@ -105,8 +105,6 @@ class ChatService:
             self.base_headers['authkey'] = auth_key
 
         await get_dpl(self)
-        self.s.session.cookies.set("__Secure-next-auth.callback-url", "https%3A%2F%2Fchatgpt.com;",
-                                   domain=self.host_url.split("://")[1], secure=True)
 
     async def set_model(self):
         self.origin_model = self.data.get("model", "gpt-3.5-turbo-0125")
@@ -117,6 +115,8 @@ class ChatService:
             self.req_model = "o1-mini"
         elif "o1" in self.origin_model:
             self.req_model = "o1"
+        elif "gpt-4o-canmore" in self.origin_model:
+            self.req_model = "gpt-4o-canmore"
         elif "gpt-4o-mini" in self.origin_model:
             self.req_model = "gpt-4o-mini"
         elif "gpt-4o" in self.origin_model:
@@ -233,8 +233,8 @@ class ChatService:
                     detail = r.json().get("detail", r.json())
                 else:
                     detail = r.text
-                if "cf-please-wait" in detail:
-                    raise HTTPException(status_code=r.status_code, detail="cf-please-wait")
+                if "cf-spinner-please-wait" in detail:
+                    raise HTTPException(status_code=r.status_code, detail="cf-spinner-please-wait")
                 if r.status_code == 429:
                     raise HTTPException(status_code=r.status_code, detail="rate-limit")
                 raise HTTPException(status_code=r.status_code, detail=detail)
@@ -322,9 +322,9 @@ class ChatService:
                     if r.status_code == 429:
                         check_is_limit(detail, token=self.req_token, model=self.req_model)
                 else:
-                    if "cf-please-wait" in rtext:
-                        # logger.error(f"Failed to send conversation: cf-please-wait")
-                        raise HTTPException(status_code=r.status_code, detail="cf-please-wait")
+                    if "cf-spinner-please-wait" in rtext:
+                        # logger.error(f"Failed to send conversation: cf-spinner-please-wait")
+                        raise HTTPException(status_code=r.status_code, detail="cf-spinner-please-wait")
                     if r.status_code == 429:
                         # logger.error(f"Failed to send conversation: rate-limit")
                         raise HTTPException(status_code=r.status_code, detail="rate-limit")
